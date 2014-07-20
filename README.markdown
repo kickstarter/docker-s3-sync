@@ -1,11 +1,13 @@
-# Docker Sync S3 SSH Key tool
+# Docker S3 Sync
 
-A docker container to periodically fetch SSH authorized keys from S3 to the host container.
+A docker container to periodically fetch files from S3.
+
+It's useful for provisioning sensitive credentials.
 
 AWS credentials are assumed to be provided via an IAM instance profile.
 
-## TODO:
-1. Make this a generic tool for syncing any file from S3 to the host container
-2. Find a better name for it.
-3. Move file into place atomically
-4. Publish it in the public docker hub
+## Usage:
+```
+# Copy s3://mybucket/authorized_keys to /root/.ssh/authorized_keys
+docker run -e S3_BUCKET=mybucket -e S3_KEY=authorized_keys -e DESTINATION=/root/.ssh/authorized_keys --rm ktheory/docker-s3-sync
+```
