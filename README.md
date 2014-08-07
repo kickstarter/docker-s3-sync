@@ -6,7 +6,7 @@ It's useful for provisioning sensitive credentials.
 
 ## Usage:
 
-Basic example:
+Basic docker example:
 ```
 # Copy s3://mybucket/authorized_keys to /root/.ssh/authorized_keys
 docker run \
@@ -21,3 +21,10 @@ ktheory/docker-s3-sync
 
 AWS credentials are assumed to be provided via an IAM instance profile.
 To use traditional AWS credentials, pass `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` env vars.
+
+Alternatively, use the `docker-s3-sync` ruby script to run more concisely:
+```
+docker-s3-sync -b BUCKET -k KEY [-m MODE] DESTINATION
+```
+
+

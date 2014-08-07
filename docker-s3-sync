@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+# A convenience script for running docker S3 sync containers
+
+require 'optparse'
+
+options = {
+  :image => 'ktheory/docker-s3-sync:0.3.0'
+}
+
+optparse = OptionParser.new do |opts|
+  opts.banner = %Q{
+  Copy a file from S3 to the local host.
+  Usage: #{$0} -b S3_BUCKET -k KEY [--mode MODE] DESTINATION"
+  }
+
+  opts.on("-b", "--bucket S3_BUCKET", "S3 Bucket [required]") { |o| options[:bucket] = o }
+  opts.on("-k", "--key S3_KEY", "S3 Key [required]") { |o| options[:key] = o }
+  opts.on("-m", "--mode MODE", "File mode of destination [optional]") { |o| options[:mode] = o }
+  opts.on("--image IMAGE", "Docker image to use [optional, default: #{options[:image]}]") { |o| options[:image] = o }
+end
+optparse.parse!
+
+options[:destination] = ARGV[0] unless ARGV.empty?
+
+required_options = [:bucket, :key, :destination]
+unless (required_options & options.keys) == required_options
+  puts "Missing required options: #{required_options - options.keys}"
+  puts optparse
+  exit 1
+end
+
+# Destination like /root/.ssh/authorized_keys becomes /out/authorized_keys
+destination = File.join("/out", File.basename(options[:destination]))
+# Map destination dir on host to /out in containter
+volume = "#{File.dirname(options[:destination])}:/out"
+docker_env = {
+  'S3_BUCKET' => options[:bucket],
+  'S3_KEY' => options[:key],
+  'DESTINATION' => destination
+}
+docker_env['MODE'] = options[:mode] if options[:mode]
+docker_env['AWS_ACCESS_KEY_ID'] = ENV['AWS_ACCESS_KEY_ID'] if ENV['AWS_ACCESS_KEY_ID']
+docker_env['AWS_SECRET_ACCESS_KEY'] = ENV['AWS_SECRET_ACCESS_KEY'] if ENV['AWS_SECRET_ACCESS_KEY']
+
+cmd = [
+  "docker run",
+  "-v #{volume}",
+  "--rm"
+]
+cmd += docker_env.map{|k,v| "-e #{k}=#{v}" }
+cmd << options[:image]
+
+exec cmd.join(' ')
