@@ -13,7 +13,7 @@ docker run \
 -e S3_BUCKET=mybucket \
 -e S3_KEY=authorized_keys \
 -e DESTINATION=/data/authorized_keys \
--e UMASK='u=rwx,g=,r=' # Optional umask
+-e MODE='0600' # Optional file mode
 -v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
 --rm \
 ktheory/docker-s3-sync

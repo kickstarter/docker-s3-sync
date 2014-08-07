@@ -5,11 +5,13 @@ if [ -z "$S3_BUCKET" ] || [ -z "$S3_KEY" ] || [ -z "$DESTINATION" ]; then
   exit 1
 fi
 
-# Optionally set umask for destination file permissions
-if [ -n "$UMASK" ]; then
-  umask "$UMASK"
+##
+# Fetch file for S3, move it in place atomically
+aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY /tmp/out > /dev/null
+
+# Optionally set file permissions
+if [ -n "$MODE" ]; then
+  chmod "$MODE" /tmp/out
 fi
 
-# Fetch to temp file to move atomically
-aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY /tmp/out > /dev/null
 mv /tmp/out $DESTINATION
