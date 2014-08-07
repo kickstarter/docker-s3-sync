@@ -12,9 +12,9 @@ Basic example:
 docker run \
 -e S3_BUCKET=mybucket \
 -e S3_KEY=authorized_keys \
--e DESTINATION=/root/.ssh/authorized_keys \
+-e DESTINATION=/data/authorized_keys \
 -e UMASK='u=rwx,g=,r=' # Optional umask
--v /root/.ssh:/root/.ssh
+-v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
 --rm \
 ktheory/docker-s3-sync
 ```
