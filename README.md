@@ -28,13 +28,13 @@ A small ruby script is included to use the container more concisely.
 
 Install it:
 ```
-curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/ktheory/docker-s3-sync/master/docker-s3-sync
+curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/ktheory/docker-s3-sync/v0.4.0/docker-s3-sync
 chmod +x /usr/local/bin/docker-s3-sync
 ```
 
 Use it:
 ```
-docker-s3-sync -b BUCKET -k KEY [-m MODE] DESTINATION
+docker-s3-sync -b BUCKET -k KEY [-i INTERVAL ] [-m MODE] DESTINATION
 
 # For example:
 docker-s3-sync -b mybucket -k authorized_keys -m 0600 /root.ssh/authorized_keys

@@ -5,18 +5,19 @@
 require 'optparse'
 
 options = {
-  :image => 'ktheory/docker-s3-sync:0.3.0'
+  :image => 'ktheory/docker-s3-sync:0.4.0'
 }
 
 optparse = OptionParser.new do |opts|
   opts.banner = %Q{
   Copy a file from S3 to the local host.
-  Usage: #{$0} -b S3_BUCKET -k KEY [--mode MODE] DESTINATION"
+  Usage: #{$0} -b S3_BUCKET -k KEY [--interval INTERVAL] [--mode MODE] DESTINATION"
   }
 
   opts.on("-b", "--bucket S3_BUCKET", "S3 Bucket [required]") { |o| options[:bucket] = o }
   opts.on("-k", "--key S3_KEY", "S3 Key [required]") { |o| options[:key] = o }
   opts.on("-m", "--mode MODE", "File mode of destination [optional]") { |o| options[:mode] = o }
+  opts.on("-i INTERVAL", "--interval INTERVAL", "Run in a loop every INTERVAL seconds [optional, default: run once]") { |o| options[:interval] = o }
   opts.on("--image IMAGE", "Docker image to use [optional, default: #{options[:image]}]") { |o| options[:image] = o }
 end
 optparse.parse!
@@ -40,6 +41,7 @@ docker_env = {
   'DESTINATION' => destination
 }
 docker_env['MODE'] = options[:mode] if options[:mode]
+docker_env['INTERVAL'] = options[:interval] if options[:interval]
 docker_env['AWS_ACCESS_KEY_ID'] = ENV['AWS_ACCESS_KEY_ID'] if ENV['AWS_ACCESS_KEY_ID']
 docker_env['AWS_SECRET_ACCESS_KEY'] = ENV['AWS_SECRET_ACCESS_KEY'] if ENV['AWS_SECRET_ACCESS_KEY']
 
