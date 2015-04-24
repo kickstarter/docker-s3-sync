@@ -1,19 +1,31 @@
 # Docker S3 Sync
 
-A docker container to periodically fetch files from S3.
+A docker container to periodically fetch/put files from/to S3.
 
-It's useful for provisioning sensitive credentials.
+It's useful for provisioning/distributing sensitive credentials.
 
 ## Usage:
 
-Basic docker example:
+Basic docker examples:
 ```
 # Copy s3://mybucket/authorized_keys to /root/.ssh/authorized_keys
 docker run \
+-e ACTION=fetch \
 -e S3_BUCKET=mybucket \
 -e S3_KEY=authorized_keys \
--e DESTINATION=/data/authorized_keys \
+-e LOCALFILE=/data/authorized_keys \
 -e MODE='0600' # Optional file mode
+-v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
+--rm \
+ktheory/docker-s3-sync
+```
+```
+# Copy /root/.ssh/authorized_keys to s3://mybucket/authorized_keys
+docker run \
+-e ACTION=put \
+-e S3_BUCKET=mybucket \
+-e S3_KEY=authorized_keys \
+-e LOCALFILE=/data/authorized_keys \
 -v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
 --rm \
 ktheory/docker-s3-sync
