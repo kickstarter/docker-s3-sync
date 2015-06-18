@@ -14,6 +14,8 @@ docker run \
 -e S3_KEY=authorized_keys \
 -e DESTINATION=/data/authorized_keys \
 -e MODE='0600' # Optional file mode
+-e OWNER_UID='1000' # Optional file owner
+-e OWNER_GID='1000' # Optional file group
 -v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
 --rm \
 ktheory/docker-s3-sync
@@ -34,10 +36,10 @@ chmod +x /usr/local/bin/docker-s3-sync
 
 Use it:
 ```
-docker-s3-sync -b BUCKET -k KEY [-i INTERVAL ] [-m MODE] DESTINATION
+docker-s3-sync -b BUCKET -k KEY [-i INTERVAL ] [-m MODE] [-u UID] [-g GID] DESTINATION
 
 # For example:
-docker-s3-sync -b mybucket -k authorized_keys -m 0600 /root.ssh/authorized_keys
+docker-s3-sync -b mybucket -k authorized_keys -m 0600 /root/.ssh/authorized_keys
 ```
 
 
