@@ -28,7 +28,7 @@ A small ruby script is included to use the container more concisely.
 
 Install it:
 ```
-curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/ktheory/docker-s3-sync/v0.4.0/docker-s3-sync
+curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/ktheory/docker-s3-sync/v0.5.0/docker-s3-sync
 chmod +x /usr/local/bin/docker-s3-sync
 ```
 
