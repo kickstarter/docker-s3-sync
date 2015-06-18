@@ -19,6 +19,8 @@ optparse = OptionParser.new do |opts|
   opts.on("-m", "--mode MODE", "File mode of destination [optional]") { |o| options[:mode] = o }
   opts.on("-i INTERVAL", "--interval INTERVAL", "Run in a loop every INTERVAL seconds [optional, default: run once]") { |o| options[:interval] = o }
   opts.on("--image IMAGE", "Docker image to use [optional, default: #{options[:image]}]") { |o| options[:image] = o }
+  opts.on("-u UID", "--owner-uid UID", "UID of the user to own destination file, default: 0") { |o| options[:user] = o }
+  opts.on("-g GID", "--owner-gid GID", "GID of the group to own the destination file, default: UID") { |o| options[:group] = o }
 end
 optparse.parse!
 
@@ -42,6 +44,8 @@ docker_env = {
 }
 docker_env['MODE'] = options[:mode] if options[:mode]
 docker_env['INTERVAL'] = options[:interval] if options[:interval]
+docker_env['OWNER_UID'] = options[:user] if options[:user]
+docker_env['OWNER_GID'] = options[:group] if options[:group]
 docker_env['AWS_ACCESS_KEY_ID'] = ENV['AWS_ACCESS_KEY_ID'] if ENV['AWS_ACCESS_KEY_ID']
 docker_env['AWS_SECRET_ACCESS_KEY'] = ENV['AWS_SECRET_ACCESS_KEY'] if ENV['AWS_SECRET_ACCESS_KEY']
 

@@ -5,6 +5,16 @@ if [ -z "$S3_BUCKET" ] || [ -z "$S3_KEY" ] || [ -z "$DESTINATION" ]; then
   exit 1
 fi
 
+# OWNER_UID defaults to 0
+if [ -z "$OWNER_UID" ]; then
+  OWNER_UID=0
+fi
+
+# OWNER_GID default to OWNER_UID
+if [ -z "$OWNER_GID" ]; then
+  OWNER_GID=$OWNER_UID
+fi
+
 ##
 # Fetch file for S3, move it in place atomically
 function do_sync {
@@ -14,6 +24,8 @@ function do_sync {
   if [ -n "$MODE" ]; then
     chmod "$MODE" /tmp/out
   fi
+
+  chown $OWNER_UID:$OWNER_GID /tmp/out
 
   mv /tmp/out $DESTINATION
 }
