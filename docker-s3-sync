@@ -19,8 +19,9 @@ optparse = OptionParser.new do |opts|
   opts.on("-m", "--mode MODE", "File mode of destination [optional]") { |o| options[:mode] = o }
   opts.on("-i INTERVAL", "--interval INTERVAL", "Run in a loop every INTERVAL seconds [optional, default: run once]") { |o| options[:interval] = o }
   opts.on("--image IMAGE", "Docker image to use [optional, default: #{options[:image]}]") { |o| options[:image] = o }
-  opts.on("-u UID", "--owner-uid UID", "UID of the user to own destination file, default: 0") { |o| options[:user] = o }
-  opts.on("-g GID", "--owner-gid GID", "GID of the group to own the destination file, default: UID") { |o| options[:group] = o }
+  opts.on("-u UID", "--owner-uid UID", "UID of the user to own destination file [optional, default: 0]") { |o| options[:user] = o }
+  opts.on("-g GID", "--owner-gid GID", "GID of the group to own the destination file [optional, default: UID]") { |o| options[:group] = o }
+  opts.on("--name NAME", "Name of the docker container [optional]") { |o| options[:name] = o }
 end
 optparse.parse!
 
@@ -54,6 +55,7 @@ cmd = [
   "-v #{volume}",
   "--rm"
 ]
+cmd << "--name #{options[:name]}" if options[:name]
 cmd += docker_env.map{|k,v| "-e #{k}=#{v}" }
 cmd << options[:image]
 
