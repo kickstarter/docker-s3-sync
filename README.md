@@ -4,6 +4,8 @@ A docker container to periodically fetch files from S3.
 
 It's useful for provisioning sensitive credentials.
 
+See [ktheory/docker-s3-sync](https://registry.hub.docker.com/u/ktheory/docker-s3-sync/) in the docker registry.
+
 ## Usage:
 
 Basic docker example:
