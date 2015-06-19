@@ -5,7 +5,7 @@
 require 'optparse'
 
 options = {
-  :image => 'ktheory/docker-s3-sync:0.5.0'
+  :image => 'ktheory/docker-s3-sync:0.5.1'
 }
 
 optparse = OptionParser.new do |opts|
