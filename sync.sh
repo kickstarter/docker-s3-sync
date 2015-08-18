@@ -1,4 +1,5 @@
 #!/bin/bash -e
+CURRENT_ETAG=''
 
 if [ -z "$S3_BUCKET" ] || [ -z "$S3_KEY" ] || [ -z "$DESTINATION" ]; then
   echo "Must set S3_BUCKET, S3_KEY, and DESTINATION env vars" 1>&2
@@ -18,6 +19,12 @@ fi
 ##
 # Fetch file for S3, move it in place atomically
 function do_sync {
+  FILE_ETAG=$(aws s3api head-object --bucket $S3_BUCKET --key $S3_KEY | grep -i etag | tr -d ',')
+  if [ $FILE_ETAG == $CURRENT_ETAG ]; then
+    return 0
+  fi
+  CURRENT_ETAG=$FILE_ETAG
+  
   aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY /tmp/out > /dev/null
 
   # Optionally set file permissions
