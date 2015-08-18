@@ -20,7 +20,7 @@ fi
 # Fetch file for S3, move it in place atomically
 function do_sync {
   FILE_ETAG=$(aws s3api head-object --bucket $S3_BUCKET --key $S3_KEY | grep -i etag | tr -d ',')
-  if [ $FILE_ETAG == $CURRENT_ETAG ]; then
+  if [ "$FILE_ETAG" == "$CURRENT_ETAG" ]; then
     return 0
   fi
   CURRENT_ETAG=$FILE_ETAG

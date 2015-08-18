@@ -5,7 +5,7 @@
 require 'optparse'
 
 options = {
-  :image => 'ktheory/docker-s3-sync:0.5.1'
+  :image => 'ktheory/docker-s3-sync:0.5.2'
 }
 
 optparse = OptionParser.new do |opts|
@@ -14,6 +14,7 @@ optparse = OptionParser.new do |opts|
   Usage: #{$0} -b S3_BUCKET -k KEY [--interval INTERVAL] [--mode MODE] DESTINATION"
   }
 
+  opts.on("-d", "--dryrun", "Output command instead of exec'ing") { |o| options[:dryrun] = o }
   opts.on("-b", "--bucket S3_BUCKET", "S3 Bucket [required]") { |o| options[:bucket] = o }
   opts.on("-k", "--key S3_KEY", "S3 Key [required]") { |o| options[:key] = o }
   opts.on("-m", "--mode MODE", "File mode of destination [optional]") { |o| options[:mode] = o }
@@ -59,4 +60,8 @@ cmd << "--name #{options[:name]}" if options[:name]
 cmd += docker_env.map{|k,v| "-e #{k}=#{v}" }
 cmd << options[:image]
 
-exec cmd.join(' ')
+if options[:dryrun]
+  puts cmd.join(' ')
+else
+  exec cmd.join(' ')
+end
