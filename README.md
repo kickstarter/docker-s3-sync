@@ -4,8 +4,8 @@ A docker container to periodically fetch files from S3.
 
 It's useful for provisioning sensitive credentials.
 
-* Docker registry: [ktheory/docker-s3-sync](https://registry.hub.docker.com/u/ktheory/docker-s3-sync/)
-* GitHub: [ktheory/docker-s3-sync](https://github.com/ktheory/docker-s3-sync)
+* Docker registry: [kickstarter/docker-s3-sync](https://registry.hub.docker.com/u/kickstarter/docker-s3-sync/)
+* GitHub: [kickstarter/docker-s3-sync](https://github.com/kickstarter/docker-s3-sync)
 
 ## Usage:
 
@@ -21,7 +21,7 @@ docker run \
 -e OWNER_GID='1000' # Optional file group
 -v /root/.ssh:/data # Map /root/.ssh on the host to /data in the container
 --rm \
-ktheory/docker-s3-sync
+kickstarter/docker-s3-sync
 ```
 
 AWS credentials are assumed to be provided via an IAM instance profile.
@@ -33,7 +33,7 @@ A small ruby script is included to use the container more concisely.
 
 Install it:
 ```
-curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/ktheory/docker-s3-sync/v0.5.0/docker-s3-sync
+curl -O /usr/local/bin/docker-s3-sync https://raw.githubusercontent.com/kickstarter/docker-s3-sync/v0.5.0/docker-s3-sync
 chmod +x /usr/local/bin/docker-s3-sync
 ```
 
