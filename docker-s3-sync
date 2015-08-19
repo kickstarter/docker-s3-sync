@@ -5,7 +5,7 @@
 require 'optparse'
 
 options = {
-  :image => 'kickstarter/docker-s3-sync:0.5.2'
+  :image => 'kickstarter/docker-s3-sync:0.5.3'
 }
 
 optparse = OptionParser.new do |opts|
