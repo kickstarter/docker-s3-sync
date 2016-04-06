@@ -24,17 +24,17 @@ function do_sync {
     return 0
   fi
   CURRENT_ETAG=$FILE_ETAG
-  
-  aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY /tmp/out > /dev/null
+
+  aws s3api get-object --bucket $S3_BUCKET --key $S3_KEY /tmp/$S3_KEY > /dev/null
 
   # Optionally set file permissions
   if [ -n "$MODE" ]; then
-    chmod "$MODE" /tmp/out
+    chmod "$MODE" /tmp/$S3_KEY
   fi
 
-  chown $OWNER_UID:$OWNER_GID /tmp/out
+  chown $OWNER_UID:$OWNER_GID /tmp/$S3_KEY
 
-  mv /tmp/out $DESTINATION
+  mv /tmp/$S3_KEY $DESTINATION
 }
 
 if [ -z "$INTERVAL" ]; then
